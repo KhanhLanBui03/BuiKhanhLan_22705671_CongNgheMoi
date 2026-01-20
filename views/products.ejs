@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+</head>
+<body>
+<p align="right"><a href="/logout">Đăng xuất</a></p>
+<h2>Add Product</h2>
+<form action="/add" method="post">
+  Name: <input name="name"><br>
+  Price: <input name="price"><br>
+  Quantity: <input name="quantity"><br>
+  <button>Add</button>
+</form>
+
+<hr>
+
+<h2>Product List</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Action</th>
+  </tr>
+
+  <% products.forEach(p => { %>
+    <tr>
+      <td><%= p.id %></td>
+      <td><%= p.name %></td>
+      <td><%= p.price %></td>
+      <td><%= p.quantity %></td>
+      <td>
+        <a href="/edit/<%= p.id %>">Edit</a>
+        |
+        <a href="/delete/<%= p.id %>" onclick="return confirm('Delete this product?')">Delete</a>
+      </td>
+    </tr>
+  <% }) %>
+
+</table>
+
+</body>
+</html>

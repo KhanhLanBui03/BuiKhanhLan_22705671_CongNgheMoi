@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+    <h2>Đăng Nhập Hệ Thống</h2>
+    <% if (error) { %>
+        <p style="color: red;">
+            <%= error %>
+        </p>
+        <% } %>
+            <form action="/login" method="post">
+                Username: <input name="username" required><br><br>
+                Password: <input name="password" type="password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+</body>
+
+</html>
