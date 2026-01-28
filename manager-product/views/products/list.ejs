@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h2>Product List</h2>
+  <a href="/add" class="btn btn-primary">+ Add New Product</a>
+</div>
+
+<% if (products && products.length > 0) { %>
+  <div class="products-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(product => { %>
+          <tr>
+            <td class="product-image">
+              <% if (product.url_image) { %>
+                <img src="<%= product.url_image %>" alt="<%= product.name %>" />
+              <% } else { %>
+                <div class="no-image">No Image</div>
+              <% } %>
+            </td>
+            <td class="product-name"><%= product.name %></td>
+            <td class="product-price">$<%= parseFloat(product.price).toFixed(2) %></td>
+            <td class="product-quantity"><%= product.quantity %></td>
+            <td class="product-actions">
+              <a href="/edit/<%= product.id %>" class="btn btn-sm btn-edit">Edit</a>
+              <form method="POST" action="/delete/<%= product.id %>" class="delete-form">
+                <button type="submit" class="btn btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } else { %>
+  <div class="empty-state">
+    <p>No products found. <a href="/add">Create your first product</a></p>
+  </div>
+<% } %>
