@@ -32,11 +32,6 @@ async function uploadToS3(file) {
   }
 }
 
-/**
- * Delete file from S3
- * @param {string} fileUrl - S3 URL of file to delete
- * @returns {Promise<void>}
- */
 async function deleteFromS3(fileUrl) {
   if (!fileUrl) return;
 

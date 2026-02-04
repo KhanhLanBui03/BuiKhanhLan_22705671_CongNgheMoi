@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1><%= title %></h1>
+    
+    <div class="actions">
+      <a href="/students/create" class="btn btn-primary">Thêm sinh viên mới</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Họ và tên</th>
+          <th>Tuổi</th>
+          <th>Ngành học</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (students.length > 0) { %>
+          <% students.forEach(student => { %>
+            <tr>
+              <td><%= student.id %></td>
+              <td><%= student.name %></td>
+              <td><%= student.age %></td>
+              <td><%= student.major %></td>
+              <td class="action-buttons">
+                <a href="/students/<%= student.id %>" class="btn btn-info">Xem</a>
+                <a href="/students/<%= student.id %>/edit" class="btn btn-warning">Sửa</a>
+                <form action="/students/<%= student.id %>?_method=DELETE" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa sinh viên này?')">Xóa</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="5" style="text-align: center;">Chưa có sinh viên nào</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

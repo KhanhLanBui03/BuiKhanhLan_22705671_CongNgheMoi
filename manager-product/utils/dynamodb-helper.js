@@ -4,10 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const tableName = process.env.AWS_DYNAMODB_TABLE_NAME || "Products";
 
-/**
- * Get all products
- * @returns {Promise<Array>} - Array of products
- */
+
 async function getAllProducts() {
   const params = {
     TableName: tableName,
@@ -22,11 +19,6 @@ async function getAllProducts() {
   }
 }
 
-/**
- * Get product by ID
- * @param {string} id - Product ID
- * @returns {Promise<Object>} - Product object
- */
 async function getProductById(id) {
   const params = {
     TableName: tableName,
@@ -42,11 +34,6 @@ async function getProductById(id) {
   }
 }
 
-/**
- * Create new product
- * @param {Object} productData - Product data (name, price, quantity, url_image)
- * @returns {Promise<Object>} - Created product
- */
 async function createProduct(productData) {
   const product = {
     id: uuidv4(),
@@ -71,12 +58,7 @@ async function createProduct(productData) {
   }
 }
 
-/**
- * Update product
- * @param {string} id - Product ID
- * @param {Object} updateData - Data to update (name, price, quantity, url_image)
- * @returns {Promise<Object>} - Updated product
- */
+
 async function updateProduct(id, updateData) {
   const updateExpressions = [];
   const expressionAttributeValues = {};
@@ -126,11 +108,6 @@ async function updateProduct(id, updateData) {
   }
 }
 
-/**
- * Delete product
- * @param {string} id - Product ID
- * @returns {Promise<void>}
- */
 async function deleteProduct(id) {
   const params = {
     TableName: tableName,

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1><%= title %></h1>
+    
+    <div class="detail-card">
+      <div class="detail-row">
+        <strong>ID:</strong>
+        <span><%= student.id %></span>
+      </div>
+      
+      <div class="detail-row">
+        <strong>Họ và tên:</strong>
+        <span><%= student.name %></span>
+      </div>
+      
+      <div class="detail-row">
+        <strong>Tuổi:</strong>
+        <span><%= student.age %> tuổi</span>
+      </div>
+      
+      <div class="detail-row">
+        <strong>Ngành học:</strong>
+        <span><%= student.major %></span>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <a href="/students/<%= student.id %>/edit" class="btn btn-warning">Chỉnh sửa</a>
+      <a href="/" class="btn btn-secondary">Quay lại</a>
+      <form action="/students/<%= student.id %>?_method=DELETE" method="POST" style="display: inline;">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa sinh viên này?')">Xóa</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
