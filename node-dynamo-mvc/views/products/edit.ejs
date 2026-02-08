@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Product</title>
+</head>
+<body>
+  <h1>Edit Product</h1>
+  <form action="/products/edit/<%= product.id %>" method="POST">
+    <label>Name: <input type="text" name="name" value="<%= product.name %>" required /></label><br/>
+    <label>Price: <input type="number" name="price" value="<%= product.price %>" required /></label><br/>
+    <label>Image URL: <input type="text" name="url_image" value="<%= product.url_image %>" /></label><br/>
+    <button type="submit">Update</button>
+  </form>
+  <a href="/products">Back</a>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Product</title>
+</head>
+<body>
+  <h1>Add New Product</h1>
+  <form action="/products/create" method="POST">
+    <label>Name: <input type="text" name="name" required /></label><br/>
+    <label>Price: <input type="number" name="price" required /></label><br/>
+    <label>Image URL: <input type="text" name="url_image" /></label><br/>
+    <button type="submit">Create</button>
+  </form>
+  <a href="/products">Back</a>
+</body>
+</html>
