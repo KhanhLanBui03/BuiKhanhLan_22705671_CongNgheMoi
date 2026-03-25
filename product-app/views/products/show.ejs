@@ -1,0 +1,80 @@
+<%- include('../partials/header') %>
+
+<div style="max-width:700px;margin:0 auto;">
+  <div class="page-title"><i class="fas fa-info-circle"></i> Chi tiết Sản phẩm</div>
+  <div class="page-subtitle">Thông tin đầy đủ về sản phẩm</div>
+
+  <div class="card">
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <!-- Image -->
+      <div style="flex-shrink:0;">
+        <% if (product.url_image) { %>
+          <img src="<%= product.url_image %>" alt="<%= product.name %>"
+               style="width:220px;height:220px;object-fit:cover;border-radius:12px;border:1px solid #e2e8f0;"/>
+        <% } else { %>
+          <div style="width:220px;height:220px;background:#f1f5f9;border-radius:12px;
+                      display:flex;align-items:center;justify-content:center;
+                      color:#94a3b8;font-size:3rem;border:1px solid #e2e8f0;">
+            <i class="fas fa-image"></i>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Info -->
+      <div style="flex:1;min-width:200px;">
+        <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">
+          <%= product.name %>
+        </h2>
+
+        <div style="display:flex;flex-direction:column;gap:0.8rem;">
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:#64748b;text-transform:uppercase;">Giá bán</div>
+            <div style="font-size:1.5rem;font-weight:700;color:#1d4ed8;">
+              <%= Number(product.price).toLocaleString('vi-VN') %> ₫
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:#64748b;text-transform:uppercase;">Tồn kho</div>
+            <div>
+              <span class="badge <%= product.unit_in_stock > 0 ? 'badge-green' : 'badge-red' %>"
+                    style="font-size:0.95rem;padding:0.3rem 0.8rem;">
+                <%= product.unit_in_stock %> cái
+                <% if (product.unit_in_stock === 0) { %> — Hết hàng<% } %>
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:#64748b;text-transform:uppercase;">ID sản phẩm</div>
+            <div style="font-family:monospace;font-size:0.85rem;color:#475569;"><%= product.id %></div>
+          </div>
+
+          <% if (product.url_image) { %>
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:#64748b;text-transform:uppercase;">Đường dẫn ảnh</div>
+            <div style="font-family:monospace;font-size:0.82rem;color:#475569;word-break:break-all;"><%= product.url_image %></div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <hr style="margin:1.5rem 0;border:none;border-top:1px solid #f1f5f9;"/>
+
+    <div class="actions">
+      <a href="/products/<%= product.id %>/edit" class="btn btn-warning">
+        <i class="fas fa-edit"></i> Chỉnh sửa
+      </a>
+      <form action="/products/<%= product.id %>?_method=DELETE" method="POST"
+            onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+        <button type="submit" class="btn btn-danger">
+          <i class="fas fa-trash"></i> Xóa sản phẩm
+        </button>
+      </form>
+      <a href="/" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
