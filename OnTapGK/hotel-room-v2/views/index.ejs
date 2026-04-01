@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-upcoming {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-sold {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .badge-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/" method="GET">
+        <input type="text" name="search" placeholder="Search...">
+        <select name="roomType">
+            <option value="">All Types</option>
+            <% ['Standard', 'Deluxe' , 'Suite' ].forEach(t=> { %>
+                <option value="<%= t %>" <%=roomType===t ? 'selected' : '' %>><%= t %>
+                </option>
+                <% }) %>
+        </select>
+        <select name="status">
+            <option value="">All Status</option>
+            <% ['Available', 'Occupied' , 'Maintenance' ].forEach(s=> { %>
+                <option value="<%= s %>" <%=status===s ? 'selected' : '' %>><%= s %>
+                </option>
+                <% }) %>
+        </select>
+        <button type="submit">Lọc</button>
+        <a href="/">Reset</a>
+    </form>
+    <a href="/rooms/form"
+        style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none;">
+        Tạo mới
+    </a>
+    <div class="cards" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+        <% rooms.forEach(room=> { %>
+            <% let statusClass='badge-upcoming' ; if (room.status==='Occupied' ) statusClass='badge-sold' ; if
+                (room.status==='Maintenance' ) statusClass='badge-cancelled' ; %>
+                <div class="card" style="border: 1px solid #ccc; padding: 10px; width: calc(25% - 20px);">
+
+                    <img src="<%= room.imageUrl %>" style="width: 100%; height: auto; object-fit: cover;"
+                        alt="<%= room.roomName %>">
+                    <h3>
+                        <%= room.roomName %>
+                    </h3>
+                    <p>
+                        <%= room.roomType %>
+                    </p>
+                    <p>
+                        Gia/Dem: <%= room.pricePerNight %>
+                    </p>
+                    <div style="margin-top: 10px; display: flex; gap: 10px;">
+                        <span>Sức chứa: <%= room.capacity %></span>
+                        </span>
+                        <span class="badge <%= statusClass %>">
+                            <%= room.status %>
+                        </span>
+                    </div>
+                    <p>
+                        Gia 3 dem: <%= (room.pricePerNight * 3).toLocaleString('vi-VN') %>đ
+                    </p>
+                    <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: space-between;">
+                        <a href="/rooms/detail/<%= room.roomId %>">Chi tiet</a>
+                        <a href="/rooms/<%= room.roomId %>">sua</a>
+                        <form method="POST" action="/rooms/delete/<%= room.roomId %>" style="margin:0"
+                            onsubmit="return confirm('Xóa?')">
+                            <button type="submit">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+                <% }) %>
+    </div>
+
+</body>
+
+</html>

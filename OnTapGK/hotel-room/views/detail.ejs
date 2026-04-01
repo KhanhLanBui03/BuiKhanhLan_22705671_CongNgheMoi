@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết phòng</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .box {
+            max-width: 500px;
+            border: 1px solid #ccc;
+            padding: 16px;
+            border-radius: 6px;
+        }
+
+        img {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .row {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🏨 Chi tiết phòng</h2>
+
+    <div class="box">
+
+        <% if (room.imageUrl) { %>
+            <img src="<%= room.imageUrl %>">
+            <% } else { %>
+                <p>Không có ảnh</p>
+                <% } %>
+
+                    <div class="row"><b>Tên:</b>
+                        <%= room.roomName %>
+                    </div>
+                    <div class="row"><b>Loại:</b>
+                        <%= room.roomType %>
+                    </div>
+                    <div class="row"><b>Trạng thái:</b>
+                        <%= room.status %>
+                    </div>
+                    <div class="row"><b>Giá/đêm:</b>
+                        <%= Number(room.pricePerNight).toLocaleString('vi-VN') %>₫
+                    </div>
+                    <div class="row"><b>Sức chứa:</b>
+                        <%= room.capacity %> người
+                    </div>
+
+                    <div class="row">
+                        <b>Doanh thu 3 đêm:</b>
+                        <%= (room.pricePerNight * 3).toLocaleString('vi-VN') %>₫
+                    </div>
+
+    </div>
+
+    <br>
+
+    <a href="/">⬅️ Quay lại danh sách</a>
+
+</body>
+
+</html>

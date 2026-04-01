@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= room ? 'Sửa phòng' : 'Thêm phòng' %>
+    </title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        form {
+            max-width: 500px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0 12px;
+        }
+
+        button {
+            padding: 10px 16px;
+        }
+
+        img {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>
+        <%= room ? ' Sửa phòng' : ' Thêm phòng' %>
+    </h2>
+
+    <form method="POST" action="<%= room ? '/rooms/' + room.roomId : '/rooms' %>" enctype="multipart/form-data">
+
+        <label>Tên phòng</label>
+        <input type="text" name="roomName" value="<%= room?.roomName || '' %>" required>
+
+        <label>Loại phòng</label>
+        <select name="roomType" required>
+            <% ['Standard','Deluxe','Suite'].forEach(t=> { %>
+                <option value="<%= t %>" <%=room?.roomType===t ? 'selected' : '' %>><%= t %>
+                </option>
+                <% }) %>
+        </select>
+
+        <label>Giá / đêm</label>
+        <input type="number" name="pricePerNight" value="<%= room?.pricePerNight || '' %>" required>
+
+        <label>Sức chứa</label>
+        <input type="number" name="capacity" value="<%= room?.capacity || '' %>" required>
+
+        <label>Trạng thái</label>
+        <select name="status" required>
+            <% ['Available','Occupied','Maintenance'].forEach(s=> { %>
+                <option value="<%= s %>" <%=room?.status===s ? 'selected' : '' %>><%= s %>
+                </option>
+                <% }) %>
+        </select>
+
+        <label>Ảnh phòng</label>
+        <input type="file" name="imageUrl">
+
+        <% if (room?.imageUrl) { %>
+            <img src="<%= room.imageUrl %>">
+            <% } %>
+
+                <button type="submit">💾 Lưu</button>
+                <a href="/">⬅️ Quay lại</a>
+
+    </form>
+
+</body>
+
+</html>

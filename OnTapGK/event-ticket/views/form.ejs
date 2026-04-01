@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= ticket ? 'Sửa vé' : 'Thêm vé mới' %>
+    </title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 24px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+            max-width: 520px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #444;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+            margin-left: 8px;
+        }
+
+        .preview-wrap {
+            margin-top: 8px;
+        }
+
+        .preview-wrap img {
+            max-width: 200px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>
+        <%= ticket ? '✏️ Sửa vé: ' + ticket.eventName : '➕ Thêm vé mới' %>
+    </h1>
+
+    <div class="form-card">
+        <form method="POST" action="<%= ticket ? '/tickets/' + ticket.ticketId : '/tickets' %>"
+            enctype="multipart/form-data" onsubmit="return validateForm()">
+
+            <div class="form-group">
+                <label>Tên sự kiện *</label>
+                <input type="text" name="eventName" required value="<%= ticket ? ticket.eventName : '' %>">
+            </div>
+
+            <div class="form-group">
+                <label>Tên người sở hữu *</label>
+                <input type="text" name="holderName" required value="<%= ticket ? ticket.holderName : '' %>">
+            </div>
+
+            <div class="form-group">
+                <label>Loại vé *</label>
+                <select name="category" required>
+                    <option value="">-- Chọn loại --</option>
+                    <% ['Standard','VIP','VVIP'].forEach(function(c){ %>
+                        <option value="<%= c %>" <%=(ticket && ticket.category===c) ? 'selected' : '' %>><%= c %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng *</label>
+                <input type="number" name="quantity" id="quantity" min="1" required
+                    value="<%= ticket ? ticket.quantity : '' %>">
+                <div class="hint">Phải lớn hơn 0</div>
+            </div>
+
+            <div class="form-group">
+                <label>Đơn giá (₫) *</label>
+                <input type="number" name="pricePerTicket" id="pricePerTicket" min="1" required
+                    value="<%= ticket ? ticket.pricePerTicket : '' %>">
+                <div class="hint">Phải lớn hơn 0</div>
+            </div>
+
+            <div class="form-group">
+                <label>Ngày sự kiện *</label>
+                <input type="date" name="eventDate" id="eventDate" required
+                    value="<%= ticket ? ticket.eventDate : '' %>">
+                <div class="hint">Không được nhỏ hơn ngày hiện tại</div>
+            </div>
+
+            <div class="form-group">
+                <label>Trạng thái *</label>
+                <select name="status" required>
+                    <option value="">-- Chọn trạng thái --</option>
+                    <% ['Upcoming','Sold','Cancelled'].forEach(function(s){ %>
+                        <option value="<%= s %>" <%=(ticket && ticket.status===s) ? 'selected' : '' %>><%= s %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Ảnh minh họa</label>
+                <input type="file" name="imageUrl" accept="image/*" onchange="previewImg(this)">
+                <div class="preview-wrap">
+                    <% if (ticket && ticket.imageUrl) { %>
+                        <img id="imgPreview" src="<%= ticket.imageUrl %>" alt="current">
+                        <% } else { %>
+                            <img id="imgPreview" src="" style="display:none;">
+                            <% } %>
+                </div>
+            </div>
+
+            <div style="margin-top:18px;">
+                <button type="submit" class="btn btn-primary">
+                    <%= ticket ? 'Cập nhật' : 'Thêm mới' %>
+                </button>
+                <a href="/" class="btn btn-secondary">Huỷ</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const qty = parseInt(document.getElementById('quantity').value);
+            const price = parseFloat(document.getElementById('pricePerTicket').value);
+            const dateVal = document.getElementById('eventDate').value;
+
+            if (isNaN(qty) || qty <= 0) {
+                alert('Số lượng phải lớn hơn 0');
+                return false;
+            }
+            if (isNaN(price) || price <= 0) {
+                alert('Đơn giá phải lớn hơn 0');
+                return false;
+            }
+            if (!dateVal) {
+                alert('Vui lòng chọn ngày sự kiện');
+                return false;
+            }
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const eventDate = new Date(dateVal);
+            if (eventDate < today) {
+                alert('Ngày sự kiện không được nhỏ hơn ngày hiện tại');
+                return false;
+            }
+            return true;
+        }
+
+        function previewImg(input) {
+            const preview = document.getElementById('imgPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+
+</html>
